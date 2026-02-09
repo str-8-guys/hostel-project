@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management System</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-hotel"></i> Hostel Management System</h1>
+        
+        <div class="success">
+            <i class="fas fa-check-circle"></i> Поздравляем! Django проект успешно запущен!
+        </div>
+        
+        <p>Это система для управления хостелом. Сейчас вы видите тестовую страницу.</p>
+        
+        <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h2><i class="fas fa-rocket"></i> Что работает:</h2>
+            <p>✓ Django сервер</p>
+            <p>✓ Статические файлы (CSS)</p>
+            <p>✓ Шаблоны HTML</p>
+            <p>✓ Готовая структура проекта</p>
+        </div>
+        
+        <a href="/admin" class="btn">
+            <i class="fas fa-cog"></i> Перейти в админку
+        </a>
+        
+        <div style="margin-top: 30px; font-size: 0.9em; opacity: 0.8;">
+            <p>Niyaz & Sanzhar © 2026 | Django 6.0</p>
+        </div>
+    </div>
+</body>
+</html>
