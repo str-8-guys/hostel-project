@@ -13,40 +13,46 @@
                     </h3>
                 </div>
                 <div class="card-body">
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Важно!</strong> Если вы новый гость, пожалуйста, 
+                        <a href="{% url 'register_guest' %}" class="alert-link">зарегистрируйтесь сначала</a>.
+                    </div>
+                    
                     <form method="post">
                         {% csrf_token %}
                         
-                        {% if form.errors %}
-                        <div class="alert alert-danger">
-                            <strong>Ошибка!</strong> Пожалуйста, исправьте ошибки ниже.
-                        </div>
-                        {% endif %}
-                        
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Номер</label>
-                                {{ form.room }}
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Гость</label>
+                        <div class="mb-4">
+                            <h5><i class="fas fa-user me-2"></i>Информация о госте</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Выберите гостя</label>
                                 {{ form.guest }}
+                                <small class="form-text text-muted">
+                                    Не нашли себя в списке? 
+                                    <a href="{% url 'register_guest' %}">Зарегистрируйтесь как новый гость</a>
+                                </small>
                             </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Дата заезда</label>
-                                {{ form.check_in }}
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Дата выезда</label>
-                                {{ form.check_out }}
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Общая стоимость</label>
-                                {{ form.total_price }}
-                                <small class="form-text text-muted">₽</small>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5><i class="fas fa-bed me-2"></i>Информация о бронировании</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Номер</label>
+                                    {{ form.room }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Общая стоимость (₸)</label>
+                                    {{ form.total_price }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Дата заезда</label>
+                                    {{ form.check_in }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Дата выезда</label>
+                                    {{ form.check_out }}
+                                </div>
                             </div>
                         </div>
                         

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация гостя - Hostel Management{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Регистрация нового гостя
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">ФИО</label>
+                            {{ form.name }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            {{ form.email }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Телефон</label>
+                            {{ form.phone }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Документ (паспорт/удостоверение)</label>
+                            {{ form.document_id }}
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-user-check me-2"></i>Зарегистрировать
+                            </button>
+                            <a href="{% url 'create_booking' %}" class="btn btn-secondary ms-2">
+                                <i class="fas fa-arrow-left me-2"></i>Назад к бронированию
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -8,7 +8,7 @@
     
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
- 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
- 
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow">
         <div class="container">
             <a class="navbar-brand fw-bold" href="/">
@@ -34,17 +34,22 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/rooms/">
+                        <a class="nav-link {% if '/rooms/' in request.path %}active{% endif %}" href="/rooms/">
                             <i class="fas fa-bed me-1"></i> Номера
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/bookings/">
+                        <a class="nav-link {% if '/bookings/' in request.path %}active{% endif %}" href="/bookings/">
                             <i class="fas fa-calendar-check me-1"></i> Бронирования
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin">
+                        <a class="nav-link {% if '/guest/register/' in request.path %}active{% endif %}" href="/guest/register/">
+                            <i class="fas fa-user-plus me-1"></i> Регистрация
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if '/admin/' in request.path %}active{% endif %}" href="/admin">
                             <i class="fas fa-cog me-1"></i> Админка
                         </a>
                     </li>
@@ -67,14 +72,14 @@
                     <p class="mb-0">Профессиональная система управления хостелом</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="mb-0">© 2024 Все права защищены</p>
-                    <p class="mb-0">Разработано с <i class="fas fa-heart text-danger"></i> на Django</p>
+                    <p class="mb-0">© 2026 Все права защищены</p>
+                    <p class="mb-0">Разработано с <i class="fas fa-heart text-danger"></i> Niyaz & Sanzhar </p>
                 </div>
             </div>
         </div>
     </footer>
 
-  
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="{% static 'js/script.js' %}"></script>
