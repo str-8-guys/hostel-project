@@ -5,62 +5,91 @@
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
+        <div class="col-md-10">
+            <div class="card shadow-lg">
                 <div class="card-header bg-primary text-white">
                     <h3 class="mb-0">
-                        <i class="fas fa-calendar-plus me-2"></i>Новое бронирование
+                        <i class="fas fa-calculator me-2"></i>Бронирование с расчетом стоимости
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-info mb-4">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <strong>Важно!</strong> Если вы новый гость, пожалуйста, 
-                        <a href="{% url 'register_guest' %}" class="alert-link">зарегистрируйтесь сначала</a>.
-                    </div>
-                    
-                    <form method="post">
+                    <form method="post" id="bookingForm">
                         {% csrf_token %}
                         
+                    
                         <div class="mb-4">
-                            <h5><i class="fas fa-user me-2"></i>Информация о госте</h5>
-                            <div class="mb-3">
-                                <label class="form-label">Выберите гостя</label>
-                                {{ form.guest }}
-                                <small class="form-text text-muted">
-                                    Не нашли себя в списке? 
-                                    <a href="{% url 'register_guest' %}">Зарегистрируйтесь как новый гость</a>
-                                </small>
+                            <h5 class="text-primary"><i class="fas fa-user me-2"></i>Гость</h5>
+                            {{ form.guest }}
+                            <div class="mt-2">
+                                <a href="{% url 'register_guest' %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-user-plus me-1"></i>Новый гость
+                                </a>
                             </div>
                         </div>
                         
+                     
                         <div class="mb-4">
-                            <h5><i class="fas fa-bed me-2"></i>Информация о бронировании</h5>
+                            <h5 class="text-primary"><i class="fas fa-bed me-2"></i>Детали бронирования</h5>
                             <div class="row g-3">
+                               
                                 <div class="col-md-6">
-                                    <label class="form-label">Номер</label>
-                                    {{ form.room }}
+                                    <label class="form-label fw-bold">Номер *</label>
+                                    <select name="room" id="id_room" class="form-control" required>
+                                        <option value="">-- Выберите номер --</option>
+                                        {% for room in rooms_with_prices %}
+                                        <option value="{{ room.id }}" 
+                                                data-price="{{ room.price }}"
+                                                data-info="{{ room.type }} {{ room.number }}">
+                                            {{ room.type }} №{{ room.number }} - {{ room.price }} ₸/ночь
+                                        </option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
+                                
+                                
                                 <div class="col-md-6">
-                                    <label class="form-label">Общая стоимость (₸)</label>
-                                    {{ form.total_price }}
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Дата заезда</label>
+                                    <label class="form-label fw-bold">Дата заезда *</label>
                                     {{ form.check_in }}
                                 </div>
+                                
+                              
                                 <div class="col-md-6">
-                                    <label class="form-label">Дата выезда</label>
+                                    <label class="form-label fw-bold">Дата выезда *</label>
                                     {{ form.check_out }}
+                                </div>
+                                
+                              
+                                <div class="col-md-6">
+                                    <div class="card border-success">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-success mb-3">
+                                                <i class="fas fa-calculator me-2"></i>Расчет стоимости
+                                            </h6>
+                                            
+                                            <div class="mb-2">
+                                                <span id="pricePerNight" class="badge bg-info">0 ₸/ночь</span>
+                                                <span id="nightsCount" class="badge bg-warning ms-2">0 ночей</span>
+                                            </div>
+                                            
+                                            <div class="display-6 fw-bold text-success mb-2" id="totalPrice">
+                                                0 ₸
+                                            </div>
+                                            
+                                            <div id="calculationInfo" class="text-muted small">
+                                                Выберите номер и даты
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Сохранить бронирование
+                      
+                        <div class="mt-4 pt-3 border-top">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-check-circle me-2"></i>Подтвердить бронирование
                             </button>
-                            <a href="{% url 'booking_list' %}" class="btn btn-secondary ms-2">
+                            <a href="{% url 'booking_list' %}" class="btn btn-secondary btn-lg ms-2">
                                 <i class="fas fa-times me-2"></i>Отмена
                             </a>
                         </div>
@@ -70,4 +99,96 @@
         </div>
     </div>
 </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const roomSelect = document.getElementById('id_room');
+    const checkInInput = document.getElementById('id_check_in');
+    const checkOutInput = document.getElementById('id_check_out');
+    const pricePerNightSpan = document.getElementById('pricePerNight');
+    const nightsCountSpan = document.getElementById('nightsCount');
+    const totalPriceDiv = document.getElementById('totalPrice');
+    const calculationInfo = document.getElementById('calculationInfo');
+    
+   
+    const today = new Date().toISOString().split('T')[0];
+    if (checkInInput) checkInInput.min = today;
+    if (checkOutInput) checkOutInput.min = today;
+    
+
+    function formatPrice(price) {
+        return new Intl.NumberFormat('ru-RU').format(price);
+    }
+    
+    
+    function calculatePrice() {
+       
+        pricePerNightSpan.textContent = '0 ₸/ночь';
+        nightsCountSpan.textContent = '0 ночей';
+        totalPriceDiv.textContent = '0 ₸';
+        calculationInfo.textContent = 'Выберите номер и даты';
+        
+      
+        if (!roomSelect.value || !checkInInput.value || !checkOutInput.value) {
+            return;
+        }
+        
+
+        const selectedOption = roomSelect.options[roomSelect.selectedIndex];
+        const pricePerNight = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+        const roomInfo = selectedOption.getAttribute('data-info') || '';
+        
+
+        const checkIn = new Date(checkInInput.value);
+        const checkOut = new Date(checkOutInput.value);
+        
+        if (checkOut <= checkIn) {
+            calculationInfo.innerHTML = '<span class="text-danger">Дата выезда должна быть позже заезда!</span>';
+            return;
+        }
+        
+
+        const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+        
+        if (nights <= 0) {
+            calculationInfo.innerHTML = '<span class="text-danger">Минимум 1 ночь!</span>';
+            return;
+        }
+        
+      
+        const totalPrice = pricePerNight * nights;
+        
+    
+        pricePerNightSpan.textContent = formatPrice(pricePerNight) + ' ₸/ночь';
+        nightsCountSpan.textContent = nights + ' ночей';
+        totalPriceDiv.textContent = formatPrice(totalPrice) + ' ₸';
+        
+     
+        calculationInfo.innerHTML = 
+            '<div class="text-start">' +
+            '<small>' +
+            '<strong>' + roomInfo + '</strong><br>' +
+            formatPrice(pricePerNight) + ' ₸ × ' + nights + ' ночей<br>' +
+            '<strong>Итого: ' + formatPrice(totalPrice) + ' ₸</strong>' +
+            '</small>' +
+            '</div>';
+    }
+    
+
+    roomSelect.addEventListener('change', calculatePrice);
+    checkInInput.addEventListener('change', calculatePrice);
+    checkOutInput.addEventListener('change', calculatePrice);
+    
+
+    calculatePrice();
+});
+</script>
+
+<style>
+#totalPrice {
+    font-size: 2.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+</style>
 {% endblock %}
