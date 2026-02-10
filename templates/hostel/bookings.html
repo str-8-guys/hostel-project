@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Бронирования - Hostel Management{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col">
+            <h1 class="display-4 fw-bold text-center">
+                <i class="fas fa-calendar-check me-2"></i>Бронирования
+            </h1>
+            <p class="lead text-center text-muted">
+                Всего бронирований: {{ bookings|length }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Кнопка уже есть! Просто измени ссылку: -->
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="fas fa-list me-2"></i>Список бронирований</h3>
+                    <!-- ИЗМЕНИ ЭТУ СТРОКУ (строка 37 в твоем коде): -->
+                    <a href="{% url 'create_booking' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Новое бронирование
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if bookings %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Гость</th>
+                                    <th>Номер</th>
+                                    <th>Заезд</th>
+                                    <th>Выезд</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                <tr>
+                                    <td>#{{ booking.id }}</td>
+                                    <td>{{ booking.guest.name }}</td>
+                                    <td>{{ booking.room.number }} ({{ booking.room.get_room_type_display }})</td>
+                                    <td>{{ booking.check_in }}</td>
+                                    <td>{{ booking.check_out }}</td>
+                                    <td>{{ booking.total_price }}₽</td>
+                                    <td>
+                                        {% if booking.status == 'confirmed' %}
+                                            <span class="badge bg-success">Подтверждено</span>
+                                        {% elif booking.status == 'checked_in' %}
+                                            <span class="badge bg-primary">Заселен</span>
+                                        {% elif booking.status == 'checked_out' %}
+                                            <span class="badge bg-secondary">Выселен</span>
+                                        {% elif booking.status == 'cancelled' %}
+                                            <span class="badge bg-danger">Отменено</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">{{ booking.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Пагинация (можно убрать если мало данных) -->
+                    <nav aria-label="Навигация по страницам" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Назад</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Вперед</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">Нет бронирований</h4>
+                        <p class="text-muted">Создайте первое бронирование</p>
+                        <a href="{% url 'create_booking' %}" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus me-2"></i>Создать бронирование
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

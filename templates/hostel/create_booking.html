@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Новое бронирование - Hostel Management{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-calendar-plus me-2"></i>Новое бронирование
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Ошибка!</strong> Пожалуйста, исправьте ошибки ниже.
+                        </div>
+                        {% endif %}
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Номер</label>
+                                {{ form.room }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label">Гость</label>
+                                {{ form.guest }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label">Дата заезда</label>
+                                {{ form.check_in }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label">Дата выезда</label>
+                                {{ form.check_out }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label">Общая стоимость</label>
+                                {{ form.total_price }}
+                                <small class="form-text text-muted">₽</small>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Сохранить бронирование
+                            </button>
+                            <a href="{% url 'booking_list' %}" class="btn btn-secondary ms-2">
+                                <i class="fas fa-times me-2"></i>Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

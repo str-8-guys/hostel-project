@@ -1,38 +1,121 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hostel Management System</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Главная - Hostel Management{% endblock %}
+
+{% block content %}
+
+<header class="hero-section py-5">
     <div class="container">
-        <h1><i class="fas fa-hotel"></i> Hostel Management System</h1>
-        
-        <div class="success">
-            <i class="fas fa-check-circle"></i> Поздравляем! Django проект успешно запущен!
-        </div>
-        
-        <p>Это система для управления хостелом. Сейчас вы видите тестовую страницу.</p>
-        
-        <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">
-            <h2><i class="fas fa-rocket"></i> Что работает:</h2>
-            <p>✓ Django сервер</p>
-            <p>✓ Статические файлы (CSS)</p>
-            <p>✓ Шаблоны HTML</p>
-            <p>✓ Готовая структура проекта</p>
-        </div>
-        
-        <a href="/admin" class="btn">
-            <i class="fas fa-cog"></i> Перейти в админку
-        </a>
-        
-        <div style="margin-top: 30px; font-size: 0.9em; opacity: 0.8;">
-            <p>Niyaz & Sanzhar © 2026 | Django 6.0</p>
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Управляйте хостелом <span class="text-primary">эффективно</span>
+                </h1>
+                <p class="lead mb-4">
+                    Современная система управления бронированиями, номерами и гостями. 
+                    Все инструменты для успешного ведения бизнеса в одном месте.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="/rooms/" class="btn btn-primary btn-lg px-4">
+                        <i class="fas fa-eye me-2"></i>Посмотреть номера
+                    </a>
+                    <a href="/admin" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-sign-in-alt me-2"></i>Войти в систему
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <h3 class="card-title text-center mb-4">
+                            <i class="fas fa-chart-line text-primary me-2"></i>Быстрая статистика
+                        </h3>
+                        <div class="row text-center">
+                            <div class="col-md-6 mb-3">
+                                <div class="stat-card p-3 rounded bg-light">
+                                    <i class="fas fa-bed fa-2x text-primary mb-2"></i>
+                                    <h4 class="fw-bold">{{ room_count }}</h4>
+                                    <p class="text-muted mb-0">Номера</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="stat-card p-3 rounded bg-light">
+                                    <i class="fas fa-users fa-2x text-success mb-2"></i>
+                                    <h4 class="fw-bold">{{ guest_count }}</h4>
+                                    <p class="text-muted mb-0">Гостей</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="stat-card p-3 rounded bg-light">
+                                    <i class="fas fa-calendar-alt fa-2x text-warning mb-2"></i>
+                                    <h4 class="fw-bold">{{ booking_count }}</h4>
+                                    <p class="text-muted mb-0">Бронирований</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="stat-card p-3 rounded bg-light">
+                                    <i class="fas fa-check-circle fa-2x text-info mb-2"></i>
+                                    <h4 class="fw-bold">{{ available_rooms }}</h4>
+                                    <p class="text-muted mb-0">Свободных номеров</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</header>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold">Наши возможности</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-calendar-plus fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">Бронирование</h4>
+                        <p class="card-text">Удобное онлайн-бронирование номеров с выбором дат и автоматическим расчетом стоимости.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-user-check fa-3x text-success"></i>
+                        </div>
+                        <h4 class="card-title">Управление гостями</h4>
+                        <p class="card-text">Ведение базы гостей, история пребывания, предпочтения и специальные предложения.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-chart-pie fa-3x text-warning"></i>
+                        </div>
+                        <h4 class="card-title">Аналитика</h4>
+                        <p class="card-text">Детальные отчеты, статистика загрузки номеров и финансовые показатели.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-4">Начните прямо сейчас!</h2>
+        <p class="lead mb-4">Присоединяйтесь к сотням успешных хостелов по всему миру</p>
+        <a href="/admin" class="btn btn-light btn-lg px-5">
+            <i class="fas fa-rocket me-2"></i>Начать использование
+        </a>
+    </div>
+</section>
+{% endblock %}
