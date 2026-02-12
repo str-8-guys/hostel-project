@@ -22,7 +22,8 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -30,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
 
 
 
@@ -53,6 +54,7 @@ AUTHENTICATION_BACKENDS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -62,12 +64,7 @@ MIDDLEWARE = [
     'axes.middleware.AxesMiddleware',
 ]
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600
-    )
-}
+
 
 AXES_FAILURE_LIMIT = 5           
 AXES_COOLOFF_TIME = 1             
@@ -96,10 +93,10 @@ WSGI_APPLICATION = 'hostel_project.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600
+    )
 }
 
 
@@ -146,3 +143,4 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
     CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+
